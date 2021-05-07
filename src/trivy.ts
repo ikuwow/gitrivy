@@ -164,7 +164,7 @@ export class Trivy {
     `);
   }
 
-  public parse(vulnerabilities: Vulnerability[]): string {
+  public parse(image: string, vulnerabilities: Vulnerability[]): string {
     let issueContent: string = '';
 
     for (const vuln of vulnerabilities) {
@@ -191,7 +191,24 @@ export class Trivy {
       }
       issueContent += `${vulnTable}\n\n`;
     }
-    return issueContent;
+
+    // In some case, trivy output doesn't include image name
+    // thus, add image name as header to issueContent when 
+    // vulnerabilities are detected 
+    // 
+    // Here is the case where image name isn't included in issueContent
+    // image: my-image:latest (contain os image + jar )
+    // trivy image --ignore-unfixed --severity HIGH,CRITICAL my-image:latest
+    // 
+    // my-image:latest (alpine 3.10.9) 
+    // ==================================
+    // Total: 0 (HIGH: 0, CRITICAL: 0)
+    // 
+    // my-app.jar
+    // =================
+    // Total: 1 (HIGH: 1, CRITICAL: 0)
+    // ...
+    return issueContent ? `_(image scanned: \`${image}\`)_\n\n${issueContent}` : issueContent;
   }
 
   private validateOption(option: TrivyOption): void {
