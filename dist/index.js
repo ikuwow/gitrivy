@@ -403,6 +403,13 @@ module.exports._enoent = enoent;
 
 /***/ }),
 
+/***/ 34:
+/***/ (function(module) {
+
+module.exports = require("https");
+
+/***/ }),
+
 /***/ 39:
 /***/ (function(module) {
 
@@ -420,6 +427,28 @@ module.exports = opts => {
 
 	return Object.keys(env).find(x => x.toUpperCase() === 'PATH') || 'Path';
 };
+
+
+/***/ }),
+
+/***/ 46:
+/***/ (function(module, __unusedexports, __webpack_require__) {
+
+module.exports = getUserAgentNode
+
+const osName = __webpack_require__(2)
+
+function getUserAgentNode () {
+  try {
+    return `Node.js/${process.version.substr(1)} (${osName()}; ${process.arch})`
+  } catch (error) {
+    if (/wmic os get Caption/.test(error.message)) {
+      return 'Windows <version undetectable>'
+    }
+
+    throw error
+  }
+}
 
 
 /***/ }),
@@ -2886,6 +2915,7 @@ const create = (opt, files) => {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.isIterable = void 0;
 function isIterable(obj) {
     return obj != null && typeof obj[Symbol.iterator] === 'function';
 }
@@ -3698,9 +3728,32 @@ module.exports = warner(class Parser extends EE {
 /***/ }),
 
 /***/ 211:
-/***/ (function(module) {
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
 
-module.exports = require("https");
+"use strict";
+
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
+var osName = _interopDefault(__webpack_require__(2));
+
+function getUserAgent() {
+  try {
+    return `Node.js/${process.version.substr(1)} (${osName()}; ${process.arch})`;
+  } catch (error) {
+    if (/wmic os get Caption/.test(error.message)) {
+      return "Windows <version undetectable>";
+    }
+
+    throw error;
+  }
+}
+
+exports.getUserAgent = getUserAgent;
+//# sourceMappingURL=index.js.map
+
 
 /***/ }),
 
@@ -5771,7 +5824,7 @@ module.exports = require("buffer");
 module.exports = parseOptions;
 
 const { Deprecation } = __webpack_require__(692);
-const { getUserAgent } = __webpack_require__(526);
+const { getUserAgent } = __webpack_require__(619);
 const once = __webpack_require__(969);
 
 const pkg = __webpack_require__(215);
@@ -6525,6 +6578,25 @@ isStream.transform = function (stream) {
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -6533,13 +6605,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
-};
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(470));
@@ -6572,7 +6637,7 @@ function run() {
         ${result}`);
                 return;
             }
-            const issueContent = trivy.parse(result);
+            const issueContent = trivy.parse(image, result);
             if (issueContent === '') {
                 core.info('Vulnerabilities were not found.\nYour maintenance looks good 👍');
                 return;
@@ -7062,8 +7127,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var isPlainObject = _interopDefault(__webpack_require__(442));
-var universalUserAgent = __webpack_require__(526);
+var isPlainObject = _interopDefault(__webpack_require__(696));
+var universalUserAgent = __webpack_require__(562);
 
 function lowercaseKeys(object) {
   if (!object) {
@@ -7691,62 +7756,6 @@ function escapeProperty(s) {
 
 /***/ }),
 
-/***/ 442:
-/***/ (function(module) {
-
-"use strict";
-
-
-/*!
- * isobject <https://github.com/jonschlinkert/isobject>
- *
- * Copyright (c) 2014-2017, Jon Schlinkert.
- * Released under the MIT License.
- */
-
-function isObject(val) {
-  return val != null && typeof val === 'object' && Array.isArray(val) === false;
-}
-
-/*!
- * is-plain-object <https://github.com/jonschlinkert/is-plain-object>
- *
- * Copyright (c) 2014-2017, Jon Schlinkert.
- * Released under the MIT License.
- */
-
-function isObjectObject(o) {
-  return isObject(o) === true
-    && Object.prototype.toString.call(o) === '[object Object]';
-}
-
-function isPlainObject(o) {
-  var ctor,prot;
-
-  if (isObjectObject(o) === false) return false;
-
-  // If has modified constructor
-  ctor = o.constructor;
-  if (typeof ctor !== 'function') return false;
-
-  // If has modified prototype
-  prot = ctor.prototype;
-  if (isObjectObject(prot) === false) return false;
-
-  // If constructor does not have an Object-specific method
-  if (prot.hasOwnProperty('isPrototypeOf') === false) {
-    return false;
-  }
-
-  // Most likely a plain Object
-  return true;
-}
-
-module.exports = isPlainObject;
-
-
-/***/ }),
-
 /***/ 453:
 /***/ (function(module, __unusedexports, __webpack_require__) {
 
@@ -7849,7 +7858,7 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 var Stream = _interopDefault(__webpack_require__(413));
 var http = _interopDefault(__webpack_require__(605));
 var Url = _interopDefault(__webpack_require__(835));
-var https = _interopDefault(__webpack_require__(211));
+var https = _interopDefault(__webpack_require__(34));
 var zlib = _interopDefault(__webpack_require__(761));
 
 // Based on https://github.com/tmpvar/jsdom/blob/aa85b2abf07766ff7bf5c1f6daafb3726f2f2db5/lib/jsdom/living/blob.js
@@ -8307,6 +8316,12 @@ function convertBody(buffer, headers) {
 	// html4
 	if (!res && str) {
 		res = /<meta[\s]+?http-equiv=(['"])content-type\1[\s]+?content=(['"])(.+?)\2/i.exec(str);
+		if (!res) {
+			res = /<meta[\s]+?content=(['"])(.+?)\1[\s]+?http-equiv=(['"])content-type\3/i.exec(str);
+			if (res) {
+				res.pop(); // drop last quote
+			}
+		}
 
 		if (res) {
 			res = /charset=(.*)/i.exec(res.pop());
@@ -9314,7 +9329,7 @@ function fetch(url, opts) {
 				// HTTP fetch step 5.5
 				switch (request.redirect) {
 					case 'error':
-						reject(new FetchError(`redirect mode is set to error: ${request.url}`, 'no-redirect'));
+						reject(new FetchError(`uri requested responds with a redirect, redirect mode is set to error: ${request.url}`, 'no-redirect'));
 						finalize();
 						return;
 					case 'manual':
@@ -9353,7 +9368,8 @@ function fetch(url, opts) {
 							method: request.method,
 							body: request.body,
 							signal: request.signal,
-							timeout: request.timeout
+							timeout: request.timeout,
+							size: request.size
 						};
 
 						// HTTP-redirect fetch step 9
@@ -9933,6 +9949,25 @@ module.exports = {
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -9942,14 +9977,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.createOrUpdateIssue = void 0;
 const rest_1 = __webpack_require__(0);
 const core = __importStar(__webpack_require__(470));
 const github = __importStar(__webpack_require__(469));
@@ -10103,7 +10132,7 @@ function graphql (request, query, options) {
 /***/ (function(module, __unusedexports, __webpack_require__) {
 
 const { request } = __webpack_require__(753)
-const getUserAgent = __webpack_require__(650)
+const getUserAgent = __webpack_require__(46)
 
 const version = __webpack_require__(314).version
 const userAgent = `octokit-graphql.js/${version} ${getUserAgent()}`
@@ -10238,36 +10267,6 @@ module.exports.Collection = Hook.Collection
 
 /***/ }),
 
-/***/ 526:
-/***/ (function(__unusedmodule, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
-var osName = _interopDefault(__webpack_require__(2));
-
-function getUserAgent() {
-  try {
-    return `Node.js/${process.version.substr(1)} (${osName()}; ${process.arch})`;
-  } catch (error) {
-    if (/wmic os get Caption/.test(error.message)) {
-      return "Windows <version undetectable>";
-    }
-
-    throw error;
-  }
-}
-
-exports.getUserAgent = getUserAgent;
-//# sourceMappingURL=index.js.map
-
-
-/***/ }),
-
 /***/ 529:
 /***/ (function(module, __unusedexports, __webpack_require__) {
 
@@ -10290,62 +10289,6 @@ function hasFirstPage (link) {
   deprecate(`octokit.hasFirstPage() – You can use octokit.paginate or async iterators instead: https://github.com/octokit/rest.js#pagination.`)
   return getPageLinks(link).first
 }
-
-
-/***/ }),
-
-/***/ 548:
-/***/ (function(module) {
-
-"use strict";
-
-
-/*!
- * isobject <https://github.com/jonschlinkert/isobject>
- *
- * Copyright (c) 2014-2017, Jon Schlinkert.
- * Released under the MIT License.
- */
-
-function isObject(val) {
-  return val != null && typeof val === 'object' && Array.isArray(val) === false;
-}
-
-/*!
- * is-plain-object <https://github.com/jonschlinkert/is-plain-object>
- *
- * Copyright (c) 2014-2017, Jon Schlinkert.
- * Released under the MIT License.
- */
-
-function isObjectObject(o) {
-  return isObject(o) === true
-    && Object.prototype.toString.call(o) === '[object Object]';
-}
-
-function isPlainObject(o) {
-  var ctor,prot;
-
-  if (isObjectObject(o) === false) return false;
-
-  // If has modified constructor
-  ctor = o.constructor;
-  if (typeof ctor !== 'function') return false;
-
-  // If has modified prototype
-  prot = ctor.prototype;
-  if (isObjectObject(prot) === false) return false;
-
-  // If constructor does not have an Object-specific method
-  if (prot.hasOwnProperty('isPrototypeOf') === false) {
-    return false;
-  }
-
-  // Most likely a plain Object
-  return true;
-}
-
-module.exports = isPlainObject;
 
 
 /***/ }),
@@ -10428,6 +10371,36 @@ function hasPreviousPage (link) {
   deprecate(`octokit.hasPreviousPage() – You can use octokit.paginate or async iterators instead: https://github.com/octokit/rest.js#pagination.`)
   return getPageLinks(link).prev
 }
+
+
+/***/ }),
+
+/***/ 562:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
+var osName = _interopDefault(__webpack_require__(2));
+
+function getUserAgent() {
+  try {
+    return `Node.js/${process.version.substr(1)} (${osName()}; ${process.arch})`;
+  } catch (error) {
+    if (/wmic os get Caption/.test(error.message)) {
+      return "Windows <version undetectable>";
+    }
+
+    throw error;
+  }
+}
+
+exports.getUserAgent = getUserAgent;
+//# sourceMappingURL=index.js.map
 
 
 /***/ }),
@@ -11394,6 +11367,36 @@ module.exports = require("events");
 
 /***/ }),
 
+/***/ 619:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
+var osName = _interopDefault(__webpack_require__(2));
+
+function getUserAgent() {
+  try {
+    return `Node.js/${process.version.substr(1)} (${osName()}; ${process.arch})`;
+  } catch (error) {
+    if (/wmic os get Caption/.test(error.message)) {
+      return "Windows <version undetectable>";
+    }
+
+    throw error;
+  }
+}
+
+exports.getUserAgent = getUserAgent;
+//# sourceMappingURL=index.js.map
+
+
+/***/ }),
+
 /***/ 621:
 /***/ (function(module, __unusedexports, __webpack_require__) {
 
@@ -11470,7 +11473,7 @@ function mkdirP (p, opts, f, made) {
     var xfs = opts.fs || fs;
     
     if (mode === undefined) {
-        mode = _0777 & (~process.umask());
+        mode = _0777
     }
     if (!made) made = null;
     
@@ -11484,6 +11487,7 @@ function mkdirP (p, opts, f, made) {
         }
         switch (er.code) {
             case 'ENOENT':
+                if (path.dirname(p) === p) return cb(er);
                 mkdirP(path.dirname(p), opts, function (er, made) {
                     if (er) cb(er, made);
                     else mkdirP(p, opts, cb, made);
@@ -11514,7 +11518,7 @@ mkdirP.sync = function sync (p, opts, made) {
     var xfs = opts.fs || fs;
     
     if (mode === undefined) {
-        mode = _0777 & (~process.umask());
+        mode = _0777
     }
     if (!made) made = null;
 
@@ -11789,28 +11793,6 @@ const getPage = __webpack_require__(265)
 
 function getLastPage (octokit, link, headers) {
   return getPage(octokit, link, 'last', headers)
-}
-
-
-/***/ }),
-
-/***/ 650:
-/***/ (function(module, __unusedexports, __webpack_require__) {
-
-module.exports = getUserAgentNode
-
-const osName = __webpack_require__(2)
-
-function getUserAgentNode () {
-  try {
-    return `Node.js/${process.version.substr(1)} (${osName()}; ${process.arch})`
-  } catch (error) {
-    if (/wmic os get Caption/.test(error.message)) {
-      return 'Windows <version undetectable>'
-    }
-
-    throw error
-  }
 }
 
 
@@ -12202,6 +12184,62 @@ class Deprecation extends Error {
 }
 
 exports.Deprecation = Deprecation;
+
+
+/***/ }),
+
+/***/ 696:
+/***/ (function(module) {
+
+"use strict";
+
+
+/*!
+ * isobject <https://github.com/jonschlinkert/isobject>
+ *
+ * Copyright (c) 2014-2017, Jon Schlinkert.
+ * Released under the MIT License.
+ */
+
+function isObject(val) {
+  return val != null && typeof val === 'object' && Array.isArray(val) === false;
+}
+
+/*!
+ * is-plain-object <https://github.com/jonschlinkert/is-plain-object>
+ *
+ * Copyright (c) 2014-2017, Jon Schlinkert.
+ * Released under the MIT License.
+ */
+
+function isObjectObject(o) {
+  return isObject(o) === true
+    && Object.prototype.toString.call(o) === '[object Object]';
+}
+
+function isPlainObject(o) {
+  var ctor,prot;
+
+  if (isObjectObject(o) === false) return false;
+
+  // If has modified constructor
+  ctor = o.constructor;
+  if (typeof ctor !== 'function') return false;
+
+  // If has modified prototype
+  prot = ctor.prototype;
+  if (isObjectObject(prot) === false) return false;
+
+  // If constructor does not have an Object-specific method
+  if (prot.hasOwnProperty('isPrototypeOf') === false) {
+    return false;
+  }
+
+  // Most likely a plain Object
+  return true;
+}
+
+module.exports = isPlainObject;
 
 
 /***/ }),
@@ -13204,6 +13242,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Trivy = exports.Downloader = void 0;
 const fs_1 = __importDefault(__webpack_require__(747));
 const zlib_1 = __importDefault(__webpack_require__(761));
 const tar_1 = __importDefault(__webpack_require__(885));
@@ -13337,7 +13376,7 @@ class Trivy {
       error: ${result.error}
     `);
     }
-    parse(vulnerabilities) {
+    parse(image, vulnerabilities) {
         let issueContent = '';
         for (const vuln of vulnerabilities) {
             if (vuln.Vulnerabilities === null)
@@ -13361,7 +13400,23 @@ class Trivy {
             }
             issueContent += `${vulnTable}\n\n`;
         }
-        return issueContent;
+        // In some case, trivy output doesn't include image name
+        // thus, add image name as header to issueContent when 
+        // vulnerabilities are detected 
+        // 
+        // Here is the case where image name isn't included in issueContent
+        // image: my-image:latest (contain os image + jar )
+        // trivy image --ignore-unfixed --severity HIGH,CRITICAL my-image:latest
+        // 
+        // my-image:latest (alpine 3.10.9) 
+        // ==================================
+        // Total: 0 (HIGH: 0, CRITICAL: 0)
+        // 
+        // my-app.jar
+        // =================
+        // Total: 1 (HIGH: 1, CRITICAL: 0)
+        // ...
+        return issueContent ? `_(image scanned: \`${image}\`)_\n\n${issueContent}` : issueContent;
     }
     validateOption(option) {
         this.validateSeverity(option.severity.split(','));
@@ -13479,8 +13534,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
 var endpoint = __webpack_require__(385);
-var universalUserAgent = __webpack_require__(526);
-var isPlainObject = _interopDefault(__webpack_require__(548));
+var universalUserAgent = __webpack_require__(211);
+var isPlainObject = _interopDefault(__webpack_require__(696));
 var nodeFetch = _interopDefault(__webpack_require__(454));
 var requestError = __webpack_require__(463);
 
