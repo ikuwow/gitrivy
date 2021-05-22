@@ -13379,7 +13379,7 @@ class Trivy {
     parse(image, vulnerabilities) {
         let issueContent = '';
         for (const vuln of vulnerabilities) {
-            if (vuln.Vulnerabilities === null)
+            if (vuln.Vulnerabilities === null || vuln.Vulnerabilities === undefined)
                 continue;
             issueContent += `## ${vuln.Target}\n`;
             let vulnTable = '|Title|Severity|CVE|Package Name|';

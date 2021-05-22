@@ -168,7 +168,7 @@ export class Trivy {
     let issueContent: string = '';
 
     for (const vuln of vulnerabilities) {
-      if (vuln.Vulnerabilities === null) continue;
+      if (vuln.Vulnerabilities === null || vuln.Vulnerabilities === undefined) continue;
 
       issueContent += `## ${vuln.Target}\n`;
       let vulnTable: string = '|Title|Severity|CVE|Package Name|';
