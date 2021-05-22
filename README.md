@@ -52,7 +52,7 @@ jobs:
       - name: Pull docker image
         run: docker pull sample
 
-      - uses: homoluctus/gitrivy@v1.0.0
+      - uses: yokawasa/gitrivy@v3.0.2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           image: sample
