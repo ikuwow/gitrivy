@@ -150,8 +150,17 @@ export class Trivy {
     });
 
     if (result.stdout && result.stdout.length > 0) {
-      const vulnerabilities: Vulnerability[] | string =
-        option.format === 'json' ? JSON.parse(result.stdout) : result.stdout;
+      let vulnerabilities: Vulnerability[] | string;
+      if (option.format === 'json') {
+        const parsedResult = JSON.parse(result.stdout);
+        if (parsedResult.Results) {
+          vulnerabilities = parsedResult.Results;
+        } else {
+          vulnerabilities = parsedResult;
+        }
+      } else {
+        vulnerabilities = result.stdout;
+      }
       if (vulnerabilities.length > 0) {
         return vulnerabilities;
       }
