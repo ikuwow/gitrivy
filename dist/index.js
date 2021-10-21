@@ -13365,7 +13365,19 @@ class Trivy {
             encoding: 'utf-8',
         });
         if (result.stdout && result.stdout.length > 0) {
-            const vulnerabilities = option.format === 'json' ? JSON.parse(result.stdout) : result.stdout;
+            let vulnerabilities;
+            if (option.format === 'json') {
+                const parsedResult = JSON.parse(result.stdout);
+                if (parsedResult.Results) {
+                    vulnerabilities = parsedResult.Results;
+                }
+                else {
+                    vulnerabilities = parsedResult;
+                }
+            }
+            else {
+                vulnerabilities = result.stdout;
+            }
             if (vulnerabilities.length > 0) {
                 return vulnerabilities;
             }
