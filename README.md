@@ -55,6 +55,9 @@ jobs:
 
       - uses: yokawasa/gitrivy@v3.0.5
         with:
+          trivy_version: 0.20.2
           token: ${{ secrets.GITHUB_TOKEN }}
-          image: sample
+          image: python:3.4-alpine
+          ignore_unfixed: true
+          issue: true
 ```
