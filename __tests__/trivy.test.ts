@@ -128,6 +128,7 @@ describe('Trivy scan', () => {
     const option: TrivyOption = {
       severity: 'HIGH,CRITICAL',
       vulnType: 'os,library',
+      timeout: '10m',
       ignoreUnfixed: true,
       format: 'json',
     };
@@ -144,6 +145,7 @@ describe('Trivy scan', () => {
     const option: TrivyOption = {
       severity: 'HIGH,CRITICAL',
       vulnType: 'os,library',
+      timeout: '10m',
       ignoreUnfixed: false,
       format: 'json',
     };
@@ -160,6 +162,7 @@ describe('Trivy scan', () => {
     const option: TrivyOption = {
       severity: 'HIGH,CRITICAL',
       vulnType: 'os,library',
+      timeout: '10m',
       ignoreUnfixed: false,
       format: 'table',
     };
@@ -176,6 +179,7 @@ describe('Trivy scan', () => {
     const invalidOption: TrivyOption = {
       severity: 'INVALID',
       vulnType: 'os,library',
+      timeout: '10m',
       ignoreUnfixed: true,
       format: 'json',
     };
@@ -188,6 +192,7 @@ describe('Trivy scan', () => {
     const invalidOption: TrivyOption = {
       severity: 'HIGH',
       vulnType: 'INVALID',
+      timeout: '10m',
       ignoreUnfixed: true,
       format: 'json',
     };

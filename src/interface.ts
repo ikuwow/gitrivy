@@ -13,6 +13,7 @@ export interface IssueResponse {
 export interface TrivyOption {
   severity: string;
   vulnType: string;
+  timeout: string;
   ignoreUnfixed: boolean;
   format: string;
 }
