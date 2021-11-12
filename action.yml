@@ -17,6 +17,10 @@ inputs:
     description: 'target vlunerability [os,library] (separated by commma)'
     default: 'os,library'
     required: false
+  timeout:
+    description: 'timeout'
+    default: '5m0s'
+    required: false
   ignore_unfixed:
     description: 'Ignore unfixed vulnerabilities [true, false]'
     default: 'false'

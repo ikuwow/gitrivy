@@ -136,6 +136,8 @@ export class Trivy {
       option.severity,
       '--vuln-type',
       option.vulnType,
+      '--timeout',
+      option.timeout,
       '--format',
       option.format,
       '--quiet',

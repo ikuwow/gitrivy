@@ -18,6 +18,7 @@ If vulnerabilities are found by Trivy, it creates the following GitHub Issue.
 |image|True|N/A|The target image name to scan the vulnerability<br>Specify this parameter or `IMAGE_NAME` environment variable|
 |severity|False|HIGH,CRITICAL|Severities of vulnerabilities (separated by commma)|
 |vuln_type|False|os,library|Scan target are os and / or library (separated by commma)|
+|timeout|False|5m0s|timeout. In case your scan may time out, try increasing the value of the `timeout` option such as `15m`.|
 |ignore_unfixed|False|false|Ignore unfixed vulnerabilities<br>Please specify `true` or `false`|
 |issue|False|true|Decide whether creating issue when vulnerabilities are found by trivy.<br>Please specify `true` or `false`|
 |token|True if issue parameter is true else False|N/A|GitHub Access Token.<br>${{ secrets.GITHUB_TOKEN }} is recommended.|
@@ -52,8 +53,11 @@ jobs:
       - name: Pull docker image
         run: docker pull sample
 
-      - uses: yokawasa/gitrivy@v3.0.2
+      - uses: yokawasa/gitrivy@v3.0.5
         with:
+          trivy_version: 0.20.2
           token: ${{ secrets.GITHUB_TOKEN }}
-          image: sample
+          image: python:3.4-alpine
+          ignore_unfixed: true
+          issue: true
 ```

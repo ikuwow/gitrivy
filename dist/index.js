@@ -6624,6 +6624,7 @@ function run() {
             const trivyOption = {
                 severity: core.getInput('severity').replace(/\s+/g, ''),
                 vulnType: core.getInput('vuln_type').replace(/\s+/g, ''),
+                timeout: core.getInput('timeout').replace(/\s+/g, ''),
                 ignoreUnfixed: core.getInput('ignore_unfixed').toLowerCase() === 'true',
                 format: issueFlag ? 'json' : 'table',
             };
@@ -13353,6 +13354,8 @@ class Trivy {
             option.severity,
             '--vuln-type',
             option.vulnType,
+            '--timeout',
+            option.timeout,
             '--format',
             option.format,
             '--quiet',

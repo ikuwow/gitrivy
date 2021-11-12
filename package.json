@@ -1,6 +1,6 @@
 {
   "name": "gitrivy",
-  "version": "3.0.1",
+  "version": "3.0.5",
   "private": true,
   "description": "Trivy with GitHub Actions",
   "main": "dist/index.js",
