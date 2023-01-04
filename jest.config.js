@@ -11,5 +11,8 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: [
     '**/src/*.ts'
-  ]
+  ],
+  globals: {
+    testTrivyVersion: '0.20.2'
+  }
 }

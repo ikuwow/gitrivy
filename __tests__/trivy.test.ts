@@ -1,9 +1,11 @@
 import { Downloader, Trivy } from '../src/trivy';
 import { unlinkSync, writeFileSync } from 'fs';
 import { Vulnerability, TrivyOption } from '../src/interface';
+import { default as jestConfig } from '../jest.config';
 
 const downloader = new Downloader();
 const trivy = new Trivy();
+const trivyVersion = jestConfig.globals.testTrivyVersion
 
 function removeTrivyCmd(path: string) {
   path = path.replace(/\/trivy$/, '');
@@ -113,10 +115,10 @@ describe('Trivy command', () => {
 describe('Trivy scan', () => {
   let trivyPath: string;
   const image: string = 'alpine:3.10';
-
+  const version = trivyVersion;
   beforeAll(async () => {
     trivyPath = !downloader.trivyExists('./__tests__')
-      ? await downloader.download('latest', './__tests__')
+      ? await downloader.download(version, './__tests__')
       : './__tests__/trivy';
   }, 300000);
 
