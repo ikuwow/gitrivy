@@ -100,7 +100,9 @@ export class Downloader {
     return new Promise((resolve, reject) => {
       const gunzip = zlib.createGunzip();
       const extract = tar.extract({ C: savedPath }, ['trivy']);
-      response.body
+      // use the non-null assertion operator ! as response.body value isn’t null or undefined
+      // ref: https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#non-null-assertion-operator-postfix-
+      response.body!
         .on('error', reject)
         .pipe(gunzip)
         .on('error', reject)

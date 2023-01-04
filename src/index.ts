@@ -77,7 +77,7 @@ async function run() {
     if (core.getInput("fail_on_vulnerabilities") === 'true') {
       core.setFailed(`Vulnerabilities found.\n${issueContent}`)
     }
-  } catch (error) {
+  } catch (error: any) {
     core.error(error.stack);
     core.setFailed(error.message);
   }
