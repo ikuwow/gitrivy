@@ -134,6 +134,7 @@ export class Trivy {
     this.validateOption(option);
 
     const args: string[] = [
+      'image',
       '--severity',
       option.severity,
       '--vuln-type',
