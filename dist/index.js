@@ -17580,6 +17580,7 @@ class Trivy {
     scan(trivyPath, image, option) {
         this.validateOption(option);
         const args = [
+            'image',
             '--severity',
             option.severity,
             '--vuln-type',
